@@ -1,19 +1,22 @@
 {
   "name": "fr-zip-codes",
   "version": "3.4.0",
-  "description": "French postal codes API for Node.js",
+  "description": "French zip codes API for Node.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/etalab/codes-postaux.git"
+    "url": "https://github.com/atefBB/codes-postaux.git"
   },
   "keywords": [
     "france",
-    "codes postaux",
+    "zip codes",
     "open data",
-    "postal code",
+    "zip code",
     "French"
   ],
-  "author": "Jérôme Desboeufs <jerome.desboeufs@data.gouv.fr>",
+  "authors": [
+    "Jérôme Desboeufs <jerome.desboeufs@data.gouv.fr>",
+    "Atef Ben Ali <atef.bettaib@gmail.com>"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/atefBB/codes-postaux/issues"
