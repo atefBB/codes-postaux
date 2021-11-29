@@ -1,11 +1,11 @@
 const index = {}
 
-require('./codes-postaux.json').forEach(entry => {
-  if (!(entry.codePostal in index)) {
-    index[entry.codePostal] = []
+require('./zipCodes.json').forEach(entry => {
+  if (!(entry.zipCode in index)) {
+    index[entry.zipCode] = []
   }
 
-  index[entry.codePostal].push(entry)
+  index[entry.zipCode].push(entry)
 })
 
 exports.find = function (postalCode) {
