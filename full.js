@@ -1,4 +1,4 @@
-const {groupBy, pick} = require('lodash')
+const { groupBy, pick } = require('lodash')
 const codesPostaux = require('./codes-postaux-full.json')
 
 const voiesIndex = groupBy(codesPostaux, item => buildIdVoie(item.codeAncienneCommune || item.codeCommune, item.codeVoie))
@@ -9,14 +9,14 @@ function buildIdVoie(codeCommune, codeVoie) {
 
 function parseIdVoie(idVoie) {
   if (!idVoie) {
-    return {codeVoie: 'XXXX'}
+    return { codeVoie: 'XXXX' }
   }
 
   if (idVoie.length === 4) {
-    return {codeVoie: idVoie}
+    return { codeVoie: idVoie }
   }
 
-  return {codeAncienneCommune: idVoie.substr(0, 5), codeVoie: idVoie.substr(6, 4)}
+  return { codeAncienneCommune: idVoie.substr(0, 5), codeVoie: idVoie.substr(6, 4) }
 }
 
 function superieurBorneInf(numero, repetition, borneInferieure) {
@@ -61,7 +61,7 @@ function findCodePostal(codeCommune, idVoie, numero, repetition) {
     throw new Error('codeVoie doit être de la forme XXXX ou YYYYY-XXXX')
   }
 
-  const {codeVoie, codeAncienneCommune} = parseIdVoie(idVoie)
+  const { codeVoie, codeAncienneCommune } = parseIdVoie(idVoie)
   const codeCommuneVoie = codeAncienneCommune || codeCommune
 
   const idVoieMatch = buildIdVoie(codeCommuneVoie, codeVoie)
@@ -89,4 +89,4 @@ function findCodePostal(codeCommune, idVoie, numero, repetition) {
   }
 }
 
-module.exports = {findCodePostal}
+module.exports = { findCodePostal }
