@@ -1,11 +1,11 @@
 /* eslint unicorn/no-process-exit: off */
 const fs = require('fs')
-const {join} = require('path')
-const {promisify} = require('util')
-const {chain, pick} = require('lodash')
-const {getLatestFIMOCTFileBuffer} = require('./download-fimoct')
-const {extractFromFIMOCT} = require('./extract-fimoct')
-const {expandWithCommune} = require('./communes')
+const { join } = require('path')
+const { promisify } = require('util')
+const { chain, pick } = require('lodash')
+const { getLatestFIMOCTFileBuffer } = require('./download-fimoct')
+const { extractFromFIMOCT } = require('./extract-fimoct')
+const { expandWithCommune } = require('./communes')
 
 const writeFile = promisify(fs.writeFile)
 
@@ -14,41 +14,47 @@ function writeAsJSONFile(path, codesPostaux) {
   return writeFile(path, '[\n' + data + '\n]')
 }
 
-const COMPACT_KEYS = ['codePostal', 'codeCommune', 'nomCommune', 'libelleAcheminement']
+const COMPACT_KEYS = ['zipCode', 'townCode', 'townName', 'routingLabel']
 
 function buildCompact(codesPostaux) {
   return chain(codesPostaux)
     .map(cp => pick(cp, ...COMPACT_KEYS))
-    .uniqBy(cp => `${cp.codePostal}-${cp.codeCommune}`)
+    .uniqBy(cp => `${cp.zipCode}-${cp.townCode}`)
     .value()
 }
 
 function expandWithDefault(codesPostaux) {
   return chain(codesPostaux)
-    .groupBy('codeCommune')
-    .map((codesPostauxCommune, codeCommune) => {
-      if (!codesPostauxCommune.some(cp => cp.codeVoie === 'XXXX')) {
-        const codePostal = chain(codesPostauxCommune)
-          .countBy('codePostal')
+    .map(entry => ({
+      zipCode: entry.codePostal,
+      townCode: entry.codeCommune,
+      routingLabel: entry.libelleAcheminement,
+      code: entry.codeVoie
+    }))
+    .groupBy('zipCode')
+    .map((townsZipCodes, townCode) => {
+      if (!townsZipCodes.some(cp => cp.code === 'XXXX')) {
+        const zipCode = chain(townsZipCodes)
+          .countBy('zipCode')
           .toPairs()
           .maxBy(p => p[1])
           .value()[0]
 
-        const libelleAcheminement = chain(codesPostauxCommune)
-          .countBy('libelleAcheminement')
+        const routingLabel = chain(townsZipCodes)
+          .countBy('routingLabel')
           .toPairs()
           .maxBy(p => p[1])
           .value()[0]
 
-        codesPostauxCommune.push({
-          codeCommune,
-          codePostal,
-          libelleAcheminement,
-          codeVoie: 'XXXX'
+        townsZipCodes.push({
+          townCode,
+          zipCode,
+          routingLabel,
+          code: 'XXXX'
         })
       }
 
-      return codesPostauxCommune
+      return townsZipCodes
     })
     .flatten()
     .value()
@@ -58,9 +64,10 @@ async function main() {
   const buffer = await getLatestFIMOCTFileBuffer()
   const codesPostaux = expandWithDefault(await extractFromFIMOCT(buffer))
   codesPostaux.forEach(item => expandWithCommune(item))
-  await writeAsJSONFile(join(__dirname, '..', 'codes-postaux-full.json'), codesPostaux)
+  // await writeAsJSONFile(join(__dirname, '..', 'codes-postaux-full.json'), codesPostaux)
   const codesPostauxCompact = buildCompact(codesPostaux)
-  await writeAsJSONFile(join(__dirname, '..', 'codes-postaux.json'), codesPostauxCompact)
+  console.log(codesPostauxCompact)
+  await writeAsJSONFile(join(__dirname, '..', 'zipCodes.json'), codesPostauxCompact)
 }
 
 main().catch(error => {
