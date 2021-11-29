@@ -1,8 +1,8 @@
-const {groupBy, keyBy, maxBy} = require('lodash')
+const { groupBy, keyBy, maxBy } = require('lodash')
 const historiqueCommunes = require('@etalab/decoupage-administratif/data/historique-communes.json')
 const arrondissementsMunicipaux = require('@etalab/decoupage-administratif/data/communes.json')
   .filter(c => c.type === 'arrondissement-municipal')
-  .map(c => ({code: c.code, nom: c.nom, type: 'COM'}))
+  .map(c => ({ code: c.code, nom: c.nom, type: 'COM' }))
 
 function connectGraph(historiqueCommunes) {
   const byId = keyBy(historiqueCommunes, 'id')
@@ -69,4 +69,4 @@ function expandWithCommune(codePostal) {
   codePostal.nomCommune = communeActuelle.nom
 }
 
-module.exports = {expandWithCommune}
+module.exports = { expandWithCommune }
