@@ -1,5 +1,5 @@
 {
-  "name": "codes-postaux",
+  "name": "fr-zip-codes",
   "version": "3.4.0",
   "description": "French postal codes API for Node.js",
   "repository": {
@@ -16,11 +16,11 @@
   "author": "Jérôme Desboeufs <jerome.desboeufs@data.gouv.fr>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/etalab/codes-postaux/issues"
+    "url": "https://github.com/atefBB/codes-postaux/issues"
   },
-  "homepage": "https://github.com/etalab/codes-postaux",
+  "homepage": "https://github.com/atefBB/codes-postaux",
   "files": [
-    "codes-postaux.json",
+    "zipCodes.json",
     "codes-postaux-full.json",
     "index.js",
     "full.js"
