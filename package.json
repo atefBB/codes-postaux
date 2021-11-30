@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/atefBB/codes-postaux",
   "files": [
-    "zipCodes.json",
+    "fullZipCodes.json",
     "codes-postaux-full.json",
     "index.js",
     "full.js"
