@@ -17,10 +17,10 @@ Les données de base sont produites à partir du [Code Officiel Géographique](h
 ### Utilisation
 
 ```js
-const codesPostaux = require("fr-zip-codes");
+const frZipCodes = require("fr-zip-codes");
 
-codesPostaux.find(75001);
-codesPostaux.find("75001");
+frZipCodes.find(75001);
+frZipCodes.find("75001");
 ```
 
 Retourne
