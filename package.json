@@ -1,6 +1,6 @@
 {
   "name": "fr-zip-codes",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "French zip codes API for Node.js",
   "repository": {
     "type": "git",
